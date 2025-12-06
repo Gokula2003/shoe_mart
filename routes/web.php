@@ -1,9 +1,55 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AfterCareController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminProductController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/order', [OrderController::class, 'index'])->name('order');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::get('/aftercare', [AfterCareController::class, 'index'])->name('aftercare');
+
+// Product Routes
+Route::get('/shop', [ProductController::class, 'index'])->name('products.index');
+Route::get('/shop/{id}', [ProductController::class, 'show'])->name('products.show');
+
+// Cart Routes
+Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::delete('/cart/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+Route::post('/order/place', [OrderController::class, 'placeOrder'])->name('order.place');
+
+// Admin Routes
+Route::prefix('admin')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+    
+    Route::middleware('auth:admin')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+        
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+        
+        // Product Management
+        Route::get('/products', [AdminProductController::class, 'index'])->name('admin.products.index');
+        Route::get('/products/create', [AdminProductController::class, 'create'])->name('admin.products.create');
+        Route::post('/products', [AdminProductController::class, 'store'])->name('admin.products.store');
+        Route::get('/products/{id}/edit', [AdminProductController::class, 'edit'])->name('admin.products.edit');
+        Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('admin.products.update');
+        Route::delete('/products/{id}', [AdminProductController::class, 'destroy'])->name('admin.products.destroy');
+    });
 });
 
 Route::middleware([
@@ -14,4 +60,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    
+    // Profile Settings Routes
+    Route::get('/profile/settings', [App\Http\Controllers\ProfileController::class, 'settings'])->name('profile.settings');
+    Route::put('/profile/password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+    Route::put('/profile/address', [App\Http\Controllers\ProfileController::class, 'updateAddress'])->name('profile.updateAddress');
 });
