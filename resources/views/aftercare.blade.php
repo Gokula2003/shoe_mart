@@ -136,22 +136,44 @@
                 </div>
             </div>
 
-            <!-- Repair Services -->
-            <div class="bg-blue-100 border-l-4 border-blue-600 p-6 rounded">
-                <h2 class="text-xl font-semibold text-gray-900 mb-3">Professional Repair Services</h2>
-                <p class="text-gray-700 mb-3">
-                    Need professional help? We offer comprehensive shoe repair services:
-                </p>
-                <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
-                    <li>Sole replacement and repair</li>
-                    <li>Heel replacement</li>
-                    <li>Zipper and buckle repair</li>
-                    <li>Professional cleaning and restoration</li>
-                    <li>Stretching and fitting adjustments</li>
-                </ul>
-                <a href="/contact" class="inline-block bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition">
-                    Contact Us for Repairs
-                </a>
+            <!-- Professional Services -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Repair Services -->
+                <div class="bg-blue-100 border-l-4 border-blue-600 p-6 rounded">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-3">Professional Repair Services</h2>
+                    <p class="text-gray-700 mb-3">
+                        Need professional help? We offer comprehensive shoe repair services:
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
+                        <li>Sole replacement and repair</li>
+                        <li>Heel replacement</li>
+                        <li>Zipper and buckle repair</li>
+                        <li>Professional cleaning and restoration</li>
+                        <li>Stretching and fitting adjustments</li>
+                    </ul>
+                    <a href="/contact" class="inline-block bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition">
+                        Contact Us for Repairs
+                    </a>
+                </div>
+
+                <!-- After Care Reservation -->
+                <div class="bg-green-100 border-l-4 border-green-600 p-6 rounded">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-3">After Care Reservation</h2>
+                    <p class="text-gray-700 mb-3">
+                        Book an appointment for professional shoe care services:
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
+                        <li>Deep cleaning and conditioning</li>
+                        <li>Polishing and restoration</li>
+                        <li>Waterproofing treatment</li>
+                        <li>Odor removal</li>
+                        <li>Expert consultation</li>
+                    </ul>
+                    <a href="{{ route('aftercare.booking') }}" 
+                       style="background-color: #16a34a !important; color: white !important; padding: 12px 24px; font-size: 16px; font-weight: 600; border-radius: 6px; text-decoration: none; display: inline-block;">
+                        📅 Book Reservation
+                    </a>
+                </div>
             </div>
         </div>
     </main>

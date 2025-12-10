@@ -17,6 +17,7 @@
                     <div class="ml-10 flex items-center space-x-4">
                         <a href="{{ route('admin.dashboard') }}" class="text-white hover:text-blue-200 px-3 py-2">Dashboard</a>
                         <a href="{{ route('admin.products.index') }}" class="text-white hover:text-blue-200 px-3 py-2">Products</a>
+                        <a href="{{ route('admin.aftercare.index') }}" class="text-white hover:text-blue-200 px-3 py-2">After Care Reservations</a>
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">

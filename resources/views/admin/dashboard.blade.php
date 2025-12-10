@@ -6,7 +6,7 @@
 <div class="px-4 py-6">
     <h1 class="text-3xl font-bold text-gray-900 mb-6">Dashboard</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <!-- Total Products Card -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between">
@@ -51,12 +51,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- After Care Reservations Card -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm">Pending Reservations</p>
+                    <p class="text-3xl font-bold text-gray-900">{{ DB::table('aftercare_reservations')->where('status', 'pending')->count() }}</p>
+                </div>
+                <div class="bg-yellow-100 rounded-full p-3">
+                    <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Quick Actions -->
     <div class="bg-white rounded-lg shadow-md p-6">
         <h2 class="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <a href="{{ route('admin.products.create') }}" 
                style="background-color: #16a34a !important; color: white !important; padding: 16px; font-size: 16px; font-weight: 600; border-radius: 6px; text-align: center; text-decoration: none; display: block;">
                 ➕ Add New Product
@@ -64,6 +79,10 @@
             <a href="{{ route('admin.products.index') }}" 
                style="background-color: #2563eb !important; color: white !important; padding: 16px; font-size: 16px; font-weight: 600; border-radius: 6px; text-align: center; text-decoration: none; display: block;">
                 📦 View All Products
+            </a>
+            <a href="{{ route('admin.aftercare.index') }}" 
+               style="background-color: #f59e0b !important; color: white !important; padding: 16px; font-size: 16px; font-weight: 600; border-radius: 6px; text-align: center; text-decoration: none; display: block;">
+                📅 After Care Reservations
             </a>
         </div>
     </div>

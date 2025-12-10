@@ -98,6 +98,115 @@
             </div>
         </div>
 
+        <!-- After Care Reservations Progress -->
+        @php
+            $reservations = DB::table('aftercare_reservations')
+                ->where('user_id', Auth::id())
+                ->orderBy('created_at', 'desc')
+                ->get();
+        @endphp
+
+        @if($reservations->count() > 0)
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">After Care Reservations</h2>
+            
+            <div class="space-y-4">
+                @foreach($reservations as $reservation)
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="font-semibold text-lg text-gray-900">{{ $reservation->service_type }}</h3>
+                                <p class="text-sm text-gray-600">
+                                    {{ \Carbon\Carbon::parse($reservation->reservation_date)->format('M d, Y') }} at 
+                                    {{ \Carbon\Carbon::parse($reservation->reservation_time)->format('g:i A') }}
+                                </p>
+                            </div>
+                            <span class="px-3 py-1 text-xs font-semibold rounded-full
+                                {{ $reservation->status == 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                {{ $reservation->status == 'confirmed' ? 'bg-blue-100 text-blue-800' : '' }}
+                                {{ $reservation->status == 'completed' ? 'bg-green-100 text-green-800' : '' }}
+                                {{ $reservation->status == 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
+                                {{ ucfirst($reservation->status) }}
+                            </span>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="mb-2">
+                            <div class="flex justify-between text-xs text-gray-600 mb-1">
+                                <span>Pending</span>
+                                <span>Confirmed</span>
+                                <span>Completed</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="h-2.5 rounded-full transition-all duration-300
+                                    {{ $reservation->status == 'pending' ? 'bg-yellow-500 w-1/3' : '' }}
+                                    {{ $reservation->status == 'confirmed' ? 'bg-blue-500 w-2/3' : '' }}
+                                    {{ $reservation->status == 'completed' ? 'bg-green-500 w-full' : '' }}
+                                    {{ $reservation->status == 'cancelled' ? 'bg-red-500 w-1/3' : '' }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Steps -->
+                        <div class="flex items-center justify-between mt-3">
+                            <div class="flex items-center">
+                                <div class="flex items-center justify-center w-8 h-8 rounded-full 
+                                    {{ in_array($reservation->status, ['pending', 'confirmed', 'completed']) ? 'bg-yellow-500 text-white' : 'bg-gray-300 text-gray-600' }}">
+                                    @if(in_array($reservation->status, ['confirmed', 'completed']))
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    @else
+                                        <span class="text-xs">1</span>
+                                    @endif
+                                </div>
+                                <span class="ml-2 text-xs text-gray-600">Requested</span>
+                            </div>
+
+                            <div class="flex-1 h-0.5 mx-2 {{ in_array($reservation->status, ['confirmed', 'completed']) ? 'bg-blue-500' : 'bg-gray-300' }}"></div>
+
+                            <div class="flex items-center">
+                                <div class="flex items-center justify-center w-8 h-8 rounded-full 
+                                    {{ in_array($reservation->status, ['confirmed', 'completed']) ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-600' }}">
+                                    @if($reservation->status == 'completed')
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    @else
+                                        <span class="text-xs">2</span>
+                                    @endif
+                                </div>
+                                <span class="ml-2 text-xs text-gray-600">Confirmed</span>
+                            </div>
+
+                            <div class="flex-1 h-0.5 mx-2 {{ $reservation->status == 'completed' ? 'bg-green-500' : 'bg-gray-300' }}"></div>
+
+                            <div class="flex items-center">
+                                <div class="flex items-center justify-center w-8 h-8 rounded-full 
+                                    {{ $reservation->status == 'completed' ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600' }}">
+                                    @if($reservation->status == 'completed')
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    @else
+                                        <span class="text-xs">3</span>
+                                    @endif
+                                </div>
+                                <span class="ml-2 text-xs text-gray-600">Completed</span>
+                            </div>
+                        </div>
+
+                        @if($reservation->notes)
+                            <div class="mt-3 pt-3 border-t border-gray-200">
+                                <p class="text-sm text-gray-600"><span class="font-medium">Notes:</span> {{ $reservation->notes }}</p>
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         <!-- Account Information -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-2xl font-semibold text-gray-900 mb-4">Account Information</h2>

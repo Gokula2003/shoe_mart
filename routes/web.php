@@ -5,10 +5,12 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AfterCareController;
+use App\Http\Controllers\AfterCareBookingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminAfterCareController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,6 +20,10 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/order', [OrderController::class, 'index'])->name('order');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/aftercare', [AfterCareController::class, 'index'])->name('aftercare');
+
+// After Care Booking Routes
+Route::get('/aftercare/booking', [AfterCareBookingController::class, 'showBookingForm'])->name('aftercare.booking');
+Route::post('/aftercare/booking', [AfterCareBookingController::class, 'submitBooking'])->name('aftercare.booking.submit');
 
 // Product Routes
 Route::get('/shop', [ProductController::class, 'index'])->name('products.index');
@@ -49,6 +55,11 @@ Route::prefix('admin')->group(function () {
         Route::get('/products/{id}/edit', [AdminProductController::class, 'edit'])->name('admin.products.edit');
         Route::put('/products/{id}', [AdminProductController::class, 'update'])->name('admin.products.update');
         Route::delete('/products/{id}', [AdminProductController::class, 'destroy'])->name('admin.products.destroy');
+        
+        // After Care Reservations Management
+        Route::get('/aftercare-reservations', [AdminAfterCareController::class, 'index'])->name('admin.aftercare.index');
+        Route::patch('/aftercare-reservations/{id}/status', [AdminAfterCareController::class, 'updateStatus'])->name('admin.aftercare.updateStatus');
+        Route::delete('/aftercare-reservations/{id}', [AdminAfterCareController::class, 'destroy'])->name('admin.aftercare.destroy');
     });
 });
 
