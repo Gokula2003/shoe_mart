@@ -29,7 +29,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'address',
     ];
 
     /**
@@ -64,5 +63,45 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the vouchers purchased by this user.
+     */
+    public function purchasedVouchers()
+    {
+        return $this->hasMany(Voucher::class, 'purchased_by');
+    }
+
+    /**
+     * Get the vouchers used by this user.
+     */
+    public function usedVouchers()
+    {
+        return $this->hasMany(Voucher::class, 'used_by');
+    }
+
+    /**
+     * Get the gift orders sent by this user.
+     */
+    public function sentGifts()
+    {
+        return $this->hasMany(GiftOrder::class, 'sender_id');
+    }
+
+    /**
+     * Get the cart items for this user.
+     */
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    /**
+     * Get the orders for this user.
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

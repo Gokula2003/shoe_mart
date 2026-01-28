@@ -11,6 +11,13 @@ class CartController extends Controller
 {
     public function add(Request $request, $productId)
     {
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('error', 'Please login to add items to your cart.')
+                ->with('intended', route('products.show', $productId));
+        }
+
         $product = Product::findOrFail($productId);
         
         $request->validate([
@@ -18,7 +25,12 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1'
         ]);
 
-        $userId = Auth::check() ? Auth::id() : null;
+        // Check if product has enough stock
+        if ($product->stock < $request->quantity) {
+            return redirect()->back()->with('error', 'Insufficient stock available.');
+        }
+
+        $userId = Auth::id();
         $sessionId = session()->getId();
 
         CartItem::create([
@@ -29,24 +41,24 @@ class CartController extends Controller
             'session_id' => $sessionId,
         ]);
 
-        return redirect()->route('cart.index')->with('success', 'Product added to cart!');
+        return redirect()->route('cart.index')->with('success', 'Product added to cart successfully!');
     }
 
     public function index()
     {
-        $userId = Auth::check() ? Auth::id() : null;
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('info', 'Please login to view your cart.');
+        }
+
+        $userId = Auth::id();
         $sessionId = session()->getId();
 
-        if ($userId) {
-            $cartItems = CartItem::where('user_id', $userId)
-                ->orWhere('session_id', $sessionId)
-                ->with('product')
-                ->get();
-        } else {
-            $cartItems = CartItem::where('session_id', $sessionId)
-                ->with('product')
-                ->get();
-        }
+        $cartItems = CartItem::where('user_id', $userId)
+            ->orWhere('session_id', $sessionId)
+            ->with('product')
+            ->get();
 
         $total = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
@@ -58,6 +70,10 @@ class CartController extends Controller
     public function remove($id)
     {
         $cartItem = CartItem::findOrFail($id);
+        
+        // Authorization check
+        $this->authorize('delete', $cartItem);
+        
         $cartItem->delete();
 
         return redirect()->route('cart.index')->with('success', 'Item removed from cart!');
@@ -65,19 +81,19 @@ class CartController extends Controller
 
     public function checkout()
     {
-        $userId = Auth::check() ? Auth::id() : null;
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('info', 'Please login to proceed with checkout.');
+        }
+
+        $userId = Auth::id();
         $sessionId = session()->getId();
 
-        if ($userId) {
-            $cartItems = CartItem::where('user_id', $userId)
-                ->orWhere('session_id', $sessionId)
-                ->with('product')
-                ->get();
-        } else {
-            $cartItems = CartItem::where('session_id', $sessionId)
-                ->with('product')
-                ->get();
-        }
+        $cartItems = CartItem::where('user_id', $userId)
+            ->orWhere('session_id', $sessionId)
+            ->with('product')
+            ->get();
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty!');

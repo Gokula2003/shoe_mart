@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class AdminProductController extends Controller
 {
@@ -22,6 +23,8 @@ class AdminProductController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create', Product::class);
+        
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -40,6 +43,13 @@ class AdminProductController extends Controller
 
         Product::create($data);
 
+        \Log::channel('security')->info('Admin created product', [
+            'admin_id' => Auth::guard('admin')->id(),
+            'product_name' => $data['name'],
+            'ip' => $request->ip(),
+            'timestamp' => now(),
+        ]);
+
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
     }
 
@@ -52,6 +62,8 @@ class AdminProductController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+        
+        $this->authorize('update', $product);
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -75,17 +87,35 @@ class AdminProductController extends Controller
 
         $product->update($data);
 
+        \Log::channel('security')->info('Admin updated product', [
+            'admin_id' => Auth::guard('admin')->id(),
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'ip' => $request->ip(),
+            'timestamp' => now(),
+        ]);
+
         return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
     }
 
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        
+        $this->authorize('delete', $product);
 
         // Delete image if exists
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
+
+        \Log::channel('security')->warning('Admin deleted product', [
+            'admin_id' => Auth::guard('admin')->id(),
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'ip' => request()->ip(),
+            'timestamp' => now(),
+        ]);
 
         $product->delete();
 

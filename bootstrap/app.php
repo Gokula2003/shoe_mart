@@ -12,7 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'sanitize' => \App\Http\Middleware\SanitizeInput::class,
+            'check.api.token' => \App\Http\Middleware\CheckApiToken::class,
+            'allow.admin.creation' => \App\Http\Middleware\AllowAdminCreationIfNone::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

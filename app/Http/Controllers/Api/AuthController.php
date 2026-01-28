@@ -24,14 +24,29 @@ class AuthController extends Controller
         $admin = Admin::where('email', $request->email)->first();
 
         if (!$admin || !Hash::check($request->password, $admin->password)) {
+            \Log::channel('security')->warning('Failed admin API login attempt', [
+                'email' => $request->email,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'timestamp' => now(),
+            ]);
+            
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid credentials'
             ], 401);
         }
 
-        // Create token
-        $token = $admin->createToken('admin-token')->plainTextToken;
+        // Create token with expiration (24 hours)
+        $tokenName = 'admin-api-' . now()->timestamp . '-' . $request->ip();
+        $token = $admin->createToken($tokenName, ['*'], now()->addHours(24))->plainTextToken;
+
+        \Log::channel('security')->info('Admin API login successful', [
+            'admin_id' => $admin->id,
+            'email' => $admin->email,
+            'ip' => $request->ip(),
+            'timestamp' => now(),
+        ]);
 
         return response()->json([
             'success' => true,
@@ -43,6 +58,7 @@ class AuthController extends Controller
                     'email' => $admin->email,
                 ],
                 'token' => $token,
+                'expires_at' => now()->addHours(24)->toIso8601String(),
             ]
         ], 200);
     }
@@ -53,6 +69,15 @@ class AuthController extends Controller
      */
     public function adminLogout(Request $request)
     {
+        $user = $request->user();
+        
+        \Log::channel('security')->info('Admin API logout', [
+            'admin_id' => $user->id,
+            'email' => $user->email,
+            'ip' => $request->ip(),
+            'timestamp' => now(),
+        ]);
+        
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([

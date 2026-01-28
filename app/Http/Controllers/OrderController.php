@@ -87,8 +87,12 @@ class OrderController extends Controller
             return redirect()->route('dashboard')->with('success', 'Order #' . $order->order_number . ' placed successfully! Total: $' . number_format($total, 2));
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Order placement failed: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to place order. Please try again. Error: ' . $e->getMessage());
+            \Log::error('Order placement failed', [
+                'user_id' => auth()->id(),
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return redirect()->back()->with('error', 'Failed to place order. Please try again later.');
         }
     }
 }

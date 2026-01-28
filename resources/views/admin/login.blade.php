@@ -20,6 +20,12 @@
             </div>
             
             <div class="bg-white rounded-lg shadow-md p-8">
+                @if(session('error'))
+                    <div class="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 @if($errors->any())
                     <div class="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
                         @foreach($errors->all() as $error)
@@ -73,8 +79,11 @@
                     </button>
                 </form>
 
-                <div class="mt-6 text-center">
-                    <a href="{{ url('/') }}" class="text-blue-600 hover:text-blue-800">
+                <div class="mt-6 text-center space-y-2">
+                    <a href="{{ route('admin.create.form') }}" class="block text-purple-600 hover:text-purple-800 font-medium">
+                        Create Admin Account
+                    </a>
+                    <a href="{{ url('/') }}" class="block text-blue-600 hover:text-blue-800">
                         ← Back to Website
                     </a>
                 </div>
