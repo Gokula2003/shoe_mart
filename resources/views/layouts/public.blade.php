@@ -18,12 +18,17 @@
     @livewireStyles
 </head>
 <body class="font-sans antialiased">
+    <!-- Customer Loading Screen -->
+    <x-loading title="ShoeMart" message="Loading your shopping experience..." />
+    
     <!-- Navigation -->
     <header class="fixed top-0 left-0 right-0 z-50 glass backdrop-blur-md bg-white/80 shadow-sm">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-8">
-                    <a href="/" class="text-2xl font-bold text-gradient">ShoeMart</a>
+                    <a href="/" class="flex items-center">
+                        <img src="{{ asset('images/logo.png') }}" alt="ShoeMart Logo" class="h-12 w-auto">
+                    </a>
                     <div class="hidden md:flex items-center space-x-6">
                         <a href="/shop" class="text-gray-700 hover:text-purple-600 transition font-medium">Shop</a>
                         <a href="/about" class="text-gray-700 hover:text-purple-600 transition font-medium">About</a>

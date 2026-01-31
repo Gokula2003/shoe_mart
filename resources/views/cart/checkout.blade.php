@@ -96,6 +96,7 @@
                                    required
                                    maxlength="10"
                                    pattern="[0-9]{10}"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                    class="input-field w-full px-5 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
                                    placeholder="1234567890"
                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')">
@@ -170,11 +171,12 @@
                                     <input type="text" 
                                            id="card_number" 
                                            name="card_number" 
-                                           maxlength="19"
-                                           placeholder="1234 5678 9012 3456"
+                                           maxlength="16"
+                                           placeholder="1234567890123456"
                                            class="input-field w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                            x-bind:required="paymentMethod === 'card'"
-                                           pattern="[0-9\s]{13,19}">
+                                           pattern="[0-9]{16}"
+                                           oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
 
                                 <!-- Card Holder Name -->

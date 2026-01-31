@@ -50,7 +50,7 @@ class AdminGiftController extends Controller
             'sender_id' => 'required|exists:users,id',
             'recipient_name' => 'required|string|max:255',
             'recipient_email' => 'required|email|max:255',
-            'recipient_phone' => 'required|string|max:20',
+            'recipient_phone' => 'required|digits:10',
             'recipient_address' => 'required|string',
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',

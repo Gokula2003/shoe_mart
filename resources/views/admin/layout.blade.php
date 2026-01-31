@@ -69,6 +69,9 @@
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-100 via-blue-50 to-slate-100 min-h-screen">
+    <!-- Admin Loading Screen -->
+    <x-admin-loading title="Admin Panel" message="Loading secure dashboard..." />
+    
     <!-- Admin Navigation -->
     <nav class="admin-gradient shadow-2xl sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

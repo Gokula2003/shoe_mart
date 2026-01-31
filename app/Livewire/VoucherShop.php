@@ -39,24 +39,15 @@ class VoucherShop extends Component
             return redirect()->route('login');
         }
 
-        // Generate unique voucher code
-        $code = 'VC-' . strtoupper(Str::random(8));
-
-        // Create voucher
-        $voucher = Voucher::create([
-            'code' => $code,
-            'amount' => $this->selectedAmount,
-            'description' => $this->description,
-            'purchased_by' => auth()->id(),
-            'expires_at' => now()->addYear(),
+        // Store voucher data in session and redirect to billing page
+        session([
+            'voucher_purchase' => [
+                'amount' => $this->selectedAmount,
+                'description' => $this->description,
+            ]
         ]);
 
-        session()->flash('message', 'Voucher purchased successfully! Your voucher code is: ' . $voucher->code);
-        
-        // Reset form
-        $this->reset(['selectedAmount', 'customAmount', 'description']);
-        
-        return redirect()->route('vouchers.success', ['voucher' => $voucher->id]);
+        return redirect()->route('vouchers.billing');
     }
 
     public function render()

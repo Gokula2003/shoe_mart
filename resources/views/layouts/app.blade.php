@@ -7,6 +7,10 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Favicon -->
+        <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+        <link rel="shortcut icon" href="{{ asset('favicon.svg') }}">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -18,6 +22,9 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased">
+        <!-- Customer Loading Screen -->
+        <x-loading title="ShoeMart" message="Loading your experience..." />
+        
         <x-banner />
 
         <div class="min-h-screen bg-gray-100">

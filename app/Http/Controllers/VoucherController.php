@@ -70,4 +70,57 @@ class VoucherController extends Controller
 
         return view('vouchers.my-vouchers', compact('vouchers'));
     }
+
+    /**
+     * Show billing page for voucher purchase.
+     */
+    public function showBilling()
+    {
+        if (!session()->has('voucher_purchase')) {
+            return redirect()->route('vouchers.shop')->with('error', 'Please select a voucher first.');
+        }
+
+        $voucherData = session('voucher_purchase');
+        return view('vouchers.billing', compact('voucherData'));
+    }
+
+    /**
+     * Process billing and create voucher.
+     */
+    public function processBilling(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|digits:10',
+            'email' => 'required|email|max:255',
+            'card_number' => 'required|digits:16',
+            'card_holder' => 'required|string|max:255',
+            'expiry_month' => 'required|digits:2|min:1|max:12',
+            'expiry_year' => 'required|integer|min:' . date('Y'),
+            'cvv' => 'required|digits:3',
+        ]);
+
+        if (!session()->has('voucher_purchase')) {
+            return redirect()->route('vouchers.shop')->with('error', 'Session expired. Please try again.');
+        }
+
+        $voucherData = session('voucher_purchase');
+
+        // Generate unique voucher code
+        $code = 'VC-' . strtoupper(\Illuminate\Support\Str::random(8));
+
+        // Create voucher
+        $voucher = Voucher::create([
+            'code' => $code,
+            'amount' => $voucherData['amount'],
+            'description' => $voucherData['description'],
+            'purchased_by' => auth()->id(),
+            'expires_at' => now()->addYear(),
+        ]);
+
+        // Clear session
+        session()->forget('voucher_purchase');
+
+        return redirect()->route('vouchers.success', ['voucher' => $voucher->id])
+            ->with('success', 'Voucher purchased successfully! Your voucher code is: ' . $voucher->code);
+    }
 }

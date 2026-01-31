@@ -26,7 +26,9 @@
             <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-8">
-                        <a href="/" class="text-2xl font-bold text-gradient">ShoeMart</a>
+                        <a href="/" class="flex items-center">
+                            <img src="{{ asset('images/logo.png') }}" alt="ShoeMart Logo" class="h-12 w-auto">
+                        </a>
                         <div class="hidden md:flex items-center space-x-6">
                             <a href="/shop" class="text-gray-700 hover:text-primary-600 transition font-medium">Shop</a>
                             <a href="/about" class="text-gray-700 hover:text-primary-600 transition font-medium">About</a>
@@ -300,7 +302,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
-                        <h3 class="text-xl font-bold mb-4 text-gradient">ShoeMart</h3>
+                        <img src="{{ asset('images/logo.png') }}" alt="ShoeMart Logo" class="h-16 w-auto mb-4">
                         <p class="text-gray-400">Your destination for quality footwear.</p>
                     </div>
                     <div>

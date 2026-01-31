@@ -2,7 +2,9 @@
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-8">
-                <a href="/" class="text-2xl font-bold text-gradient">ShoeMart</a>
+                <a href="/" class="flex items-center">
+                    <img src="{{ asset('images/logo.png') }}" alt="ShoeMart Logo" class="h-12 w-auto">
+                </a>
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="/shop" class="text-gray-700 hover:text-primary-600 transition font-medium">Shop</a>
                     <a href="/about" class="text-gray-700 hover:text-primary-600 transition font-medium">About</a>
@@ -18,9 +20,9 @@
                         <div class="relative" x-data="{ open: false }">
                             <button @click="open = !open" class="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition focus:outline-none">
                                 <div class="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center text-white font-bold shadow-lg">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                    {{ strtoupper(substr(Auth::user()?->name ?? '', 0, 1)) }}
                                 </div>
-                                <span class="text-sm font-medium hidden md:block">{{ Auth::user()->name }}</span>
+                                <span class="text-sm font-medium hidden md:block">{{ Auth::user()?->name ?? '' }}</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>

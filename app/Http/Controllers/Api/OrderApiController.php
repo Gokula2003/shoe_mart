@@ -63,7 +63,7 @@ class OrderApiController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'phone' => 'required|string',
+            'phone' => 'required|digits:10',
             'address' => 'required|string',
             'payment_method' => 'required|in:cod,card',
         ]);

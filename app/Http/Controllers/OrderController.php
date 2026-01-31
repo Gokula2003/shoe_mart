@@ -17,15 +17,36 @@ class OrderController extends Controller
         return view('order', compact('products'));
     }
 
+    public function history()
+    {
+        $orders = Order::where('user_id', auth()->id())
+            ->with('items.product')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        
+        return view('orders.history', compact('orders'));
+    }
+
     public function placeOrder(Request $request)
     {
-        $request->validate([
+        $validationRules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'phone' => 'required|string',
+            'phone' => 'required|digits:10',
             'address' => 'required|string',
             'payment_method' => 'required|in:cod,card',
-        ]);
+        ];
+
+        // Add card validation if payment method is card
+        if ($request->payment_method === 'card') {
+            $validationRules['card_number'] = 'required|digits:16';
+            $validationRules['card_holder'] = 'required|string|max:255';
+            $validationRules['expiry_month'] = 'required|digits:2|min:1|max:12';
+            $validationRules['expiry_year'] = 'required|integer|min:' . date('Y');
+            $validationRules['cvv'] = 'required|digits:3';
+        }
+
+        $request->validate($validationRules);
 
         // Get cart items
         if (auth()->check()) {

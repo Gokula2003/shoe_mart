@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/order', [OrderController::class, 'index'])->name('order');
+Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/aftercare', [AfterCareController::class, 'index'])->name('aftercare');
 
@@ -41,6 +42,8 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
 // Voucher Routes
 Route::get('/vouchers', App\Livewire\VoucherShop::class)->name('vouchers.shop');
+Route::get('/vouchers/billing', [App\Http\Controllers\VoucherController::class, 'showBilling'])->name('vouchers.billing')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
+Route::post('/vouchers/billing', [App\Http\Controllers\VoucherController::class, 'processBilling'])->name('vouchers.billing.process')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
 Route::get('/vouchers/success/{voucher}', function ($voucherId) {
     $voucher = App\Models\Voucher::findOrFail($voucherId);
     return view('vouchers.success', compact('voucher'));

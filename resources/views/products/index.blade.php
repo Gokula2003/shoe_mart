@@ -101,10 +101,12 @@
                 @endforeach
             </div>
             
-            <!-- Pagination (if applicable) -->
+            <!-- Pagination -->
+            @if($products->hasPages())
             <div class="mt-12 animate-fade-in">
                 {{ $products->links() }}
             </div>
+            @endif
         @endif
     </main>
 

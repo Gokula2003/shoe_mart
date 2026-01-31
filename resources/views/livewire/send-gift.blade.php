@@ -165,7 +165,10 @@
                                     <input 
                                         type="tel" 
                                         wire:model="recipient_phone"
-                                        placeholder="+1 (555) 000-0000"
+                                        maxlength="10"
+                                        pattern="[0-9]{10}"
+                                        placeholder="1234567890"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
                                     >
                                 </div>
