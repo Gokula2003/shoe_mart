@@ -5,3 +5,91 @@
 [x-cloak] {
     display: none;
 }
+
+/* Force Button Visibility Fixes */
+button,
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-gradient,
+[type="submit"],
+[type="button"],
+[type="reset"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* Ensure all action buttons are visible */
+a[class*="btn"],
+a[href*="edit"],
+a[href*="create"],
+a[href*="add"],
+button[class*="btn"],
+button[type="submit"],
+form button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 10 !important;
+}
+
+/* Fix for cart buttons */
+.add-to-cart-btn,
+.remove-btn,
+.quantity-btn,
+.cart-btn {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Fix for admin panel buttons */
+.admin-card button,
+.admin-card a[class*="btn"],
+table button,
+table a[class*="btn"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure text is readable on all buttons */
+button,
+[type="submit"],
+[type="button"],
+.btn-gradient,
+.btn-primary,
+.btn-secondary {
+    color: white !important;
+    font-weight: 600 !important;
+    min-height: 40px !important;
+    padding: 0.5rem 1rem !important;
+}
+
+/* Fix for navigation buttons */
+nav button,
+nav a[class*="btn"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Hover states should remain visible */
+button:hover,
+.btn:hover,
+.btn-gradient:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Disabled buttons should be slightly visible */
+button:disabled,
+button[disabled] {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+}

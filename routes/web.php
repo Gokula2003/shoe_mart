@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminAfterCareController;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Auth\TwoFactorEmailController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +23,13 @@ Route::get('/order', [OrderController::class, 'index'])->name('order');
 Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::get('/aftercare', [AfterCareController::class, 'index'])->name('aftercare');
+
+// Two-Factor Email Authentication Routes
+Route::middleware(['auth:sanctum', config('jetstream.auth_session')])->group(function () {
+    Route::get('/two-factor-email', [TwoFactorEmailController::class, 'show'])->name('two-factor.login');
+    Route::post('/two-factor-email/verify', [TwoFactorEmailController::class, 'verify'])->name('two-factor.verify');
+    Route::post('/two-factor-email/resend', [TwoFactorEmailController::class, 'resend'])->name('two-factor.resend');
+});
 
 // After Care Booking Routes
 Route::get('/aftercare/booking', [AfterCareBookingController::class, 'showBookingForm'])->name('aftercare.booking');

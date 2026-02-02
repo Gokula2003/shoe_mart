@@ -42,8 +42,8 @@
                         <div class="flex items-center space-x-4">
                             @auth
                                 <div class="relative" x-data="{ open: false }">
-                                    <button @click="open = !open" class="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition focus:outline-none">
-                                        <div class="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                                    <button @click="open = !open" class="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition focus:outline-none" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important;">
+                                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
                                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                         </div>
                                         <span class="text-sm font-medium hidden md:block">{{ Auth::user()->name }}</span>
@@ -64,7 +64,7 @@
                                         <hr class="my-2">
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
-                                            <button type="submit" class="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition">
+                                            <button type="submit" class="flex items-center w-full px-4 py-3 text-sm text-white bg-red-600 hover:bg-red-700 transition rounded-lg" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important;">
                                                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                                                 </svg>
@@ -74,9 +74,9 @@
                                     </div>
                                 </div>
                             @else
-                                <a href="{{ route('login') }}" class="text-gray-700 hover:text-primary-600 font-medium transition">Log in</a>
+                                <a href="{{ route('login') }}" class="text-gray-700 hover:text-primary-600 font-medium transition" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important;">Log in</a>
                                 @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="btn-gradient shadow-lg hover:shadow-xl transform hover:scale-105 transition">
+                                    <a href="{{ route('register') }}" class="btn-gradient shadow-lg hover:shadow-xl transform hover:scale-105 transition" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important; align-items: center; justify-content: center; padding: 0.75rem 2rem;">
                                         Get Started
                                     </a>
                                 @endif
@@ -136,7 +136,7 @@
                             </div>
                             
                             <div class="flex flex-col sm:flex-row gap-4">
-                                <a href="/shop" class="btn-gradient text-lg px-10 py-4 shadow-2xl transform hover:scale-105 transition group">
+                                <a href="/shop" class="btn-gradient text-lg px-10 py-4 shadow-2xl transform hover:scale-105 transition group" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important; align-items: center; justify-content: center;">
                                     <span class="flex items-center justify-center">
                                         Shop Collection
                                         <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +144,7 @@
                                         </svg>
                                     </span>
                                 </a>
-                                <a href="/about" class="btn bg-white text-gray-800 border-2 border-gray-300 hover:border-primary-600 hover:text-primary-600 text-lg px-10 py-4 shadow-lg">
+                                <a href="/about" class="btn bg-white text-gray-800 border-2 border-gray-300 hover:border-primary-600 hover:text-primary-600 text-lg px-10 py-4 shadow-lg" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important; align-items: center; justify-content: center;">
                                     Learn More
                                 </a>
                             </div>
@@ -289,7 +289,7 @@
                         <p class="text-xl text-white mb-8 max-w-2xl mx-auto font-medium drop-shadow-md">
                             Join thousands of satisfied customers who've found their perfect pair at ShoeMart
                         </p>
-                        <a href="/shop" class="btn bg-white text-primary-600 hover:bg-gray-100 text-lg px-10 py-4 shadow-xl transform hover:scale-105 transition">
+                        <a href="/shop" class="btn bg-white text-primary-600 hover:bg-gray-100 text-lg px-10 py-4 shadow-xl transform hover:scale-105 transition" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important; align-items: center; justify-content: center;">
                             Start Shopping Now
                         </a>
                     </div>
