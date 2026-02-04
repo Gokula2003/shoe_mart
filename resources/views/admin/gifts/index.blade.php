@@ -97,14 +97,14 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
                             <div class="flex space-x-2">
-                                <a href="{{ route('admin.gifts.show', $gift->id) }}" class="text-blue-600 hover:text-blue-900">
+                                <a href="{{ route('admin.gifts.show', $gift->id) }}" class="inline-flex items-center px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-semibold shadow-sm">
                                     View
                                 </a>
                                 @if($gift->status !== 'cancelled' && $gift->status !== 'delivered')
                                 <form action="{{ route('admin.gifts.destroy', $gift->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Cancel this gift order?')">
+                                    <button type="submit" class="inline-flex items-center px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition font-semibold shadow-sm" onclick="return confirm('Cancel this gift order?')">
                                         Cancel
                                     </button>
                                 </form>

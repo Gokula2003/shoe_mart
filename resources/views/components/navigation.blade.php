@@ -12,6 +12,9 @@
                     <a href="/aftercare" class="text-gray-700 hover:text-primary-600 transition font-medium">After Care</a>
                     <a href="{{ route('vouchers.shop') }}" class="text-gray-700 hover:text-primary-600 transition font-medium">Vouchers</a>
                     <a href="{{ route('gift.send') }}" class="text-gray-700 hover:text-primary-600 transition font-medium">Send Gift</a>
+                    @auth
+                        <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-primary-600 transition font-medium">Dashboard</a>
+                    @endauth
                 </div>
             </div>
             @if (Route::has('login'))

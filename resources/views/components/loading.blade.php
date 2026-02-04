@@ -1,97 +1,105 @@
-<!-- Customer Side Loading Component -->
-<div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50">
+<!-- Loading Screen Component -->
+<div id="loading-screen" class="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-blue-900" style="display: flex;">
     <div class="text-center">
-        <!-- Animated Logo Container -->
-        <div class="relative mb-8">
-            <!-- Spinning Ring -->
-            <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-32 h-32 border-8 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-            </div>
+        <!-- Shoe Icon made with Tailwind CSS -->
+        <div class="relative mx-auto mb-8 w-40 h-32 animate-bounce">
+            <!-- Shoe sole -->
+            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-36 h-8 bg-white rounded-full"></div>
+            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-white rounded-full opacity-80"></div>
             
-            <!-- Logo/Icon -->
-            <div class="relative flex items-center justify-center w-32 h-32">
-                <svg class="w-16 h-16 text-blue-600 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
-                </svg>
-            </div>
+            <!-- Shoe body -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-28 h-16 bg-white rounded-t-3xl rounded-bl-3xl"></div>
+            
+            <!-- Shoe toe cap -->
+            <div class="absolute bottom-8 left-2 w-16 h-12 bg-white rounded-full"></div>
+            
+            <!-- Shoe collar -->
+            <div class="absolute top-8 right-6 w-20 h-16 bg-white rounded-t-full rounded-br-3xl"></div>
+            
+            <!-- Shoe laces area -->
+            <div class="absolute top-12 right-10 w-12 h-8 bg-blue-900 rounded-lg opacity-20"></div>
+            
+            <!-- Shadow -->
+            <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-40 h-4 bg-blue-950 rounded-full opacity-30 blur-sm"></div>
         </div>
         
         <!-- Loading Text -->
-        <h2 class="text-3xl font-bold text-gray-800 mb-2 animate-pulse">
-            {{ $title ?? 'ShoeMart' }}
+        <h2 class="text-3xl font-bold text-white tracking-wider animate-pulse">
+            LOADING SHOEMART
         </h2>
-        <p class="text-gray-600 mb-6 animate-pulse">
-            {{ $message ?? 'Loading your experience...' }}
-        </p>
         
-        <!-- Progress Bar -->
-        <div class="w-64 h-2 bg-gray-200 rounded-full overflow-hidden mx-auto">
-            <div class="h-full bg-gradient-to-r from-blue-600 to-purple-600 rounded-full animate-loading-bar"></div>
-        </div>
-        
-        <!-- Loading Dots -->
-        <div class="flex justify-center mt-4 space-x-2">
-            <div class="w-3 h-3 bg-blue-600 rounded-full animate-bounce" style="animation-delay: 0s;"></div>
-            <div class="w-3 h-3 bg-purple-600 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
-            <div class="w-3 h-3 bg-pink-600 rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+        <!-- Loading dots -->
+        <div class="flex justify-center mt-6 space-x-2">
+            <div class="w-3 h-3 bg-white rounded-full animate-bounce" style="animation-delay: 0s;"></div>
+            <div class="w-3 h-3 bg-white rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+            <div class="w-3 h-3 bg-white rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
         </div>
     </div>
 </div>
 
 <style>
-    @keyframes loading-bar {
-        0% {
-            width: 0%;
-        }
-        50% {
-            width: 70%;
-        }
-        100% {
-            width: 100%;
-        }
+    #loading-screen {
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
     }
     
-    .animate-loading-bar {
-        animation: loading-bar 2s ease-in-out infinite;
-    }
-    
-    /* Fade out animation */
-    .loading-fade-out {
-        animation: fadeOut 0.5s ease-out forwards;
-    }
-    
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-            visibility: hidden;
-        }
+    #loading-screen.hidden {
+        opacity: 0;
+        pointer-events: none;
     }
 </style>
 
 <script>
-    // Auto-hide loading screen when page is fully loaded
-    window.addEventListener('load', function() {
+    // Show loading screen on page load
+    document.addEventListener('DOMContentLoaded', function() {
         const loadingScreen = document.getElementById('loading-screen');
-        if (loadingScreen) {
-            setTimeout(function() {
-                loadingScreen.classList.add('loading-fade-out');
-                setTimeout(function() {
-                    loadingScreen.remove();
-                }, 500);
-            }, 500); // Small delay for smooth transition
-        }
-    });
-    
-    // Alternative: Hide immediately if user prefers reduced motion
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        
+        // Hide loading screen after page is fully loaded
         window.addEventListener('load', function() {
-            const loadingScreen = document.getElementById('loading-screen');
             if (loadingScreen) {
-                loadingScreen.remove();
+                setTimeout(function() {
+                    loadingScreen.classList.add('hidden');
+                    setTimeout(function() {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }, 1000); // Show for at least 1 second
             }
         });
-    }
+    });
+    
+    // Show loading screen when navigating to another page
+    document.addEventListener('DOMContentLoaded', function() {
+        const links = document.querySelectorAll('a:not([target="_blank"])');
+        const loadingScreen = document.getElementById('loading-screen');
+        
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Don't show loading for same page anchors
+                if (this.getAttribute('href')?.startsWith('#')) {
+                    return;
+                }
+                
+                // Show loading screen
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'flex';
+                    loadingScreen.classList.remove('hidden');
+                }
+            });
+        });
+    });
+    
+    // Show loading on form submissions
+    document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('form');
+        const loadingScreen = document.getElementById('loading-screen');
+        
+        forms.forEach(form => {
+            form.addEventListener('submit', function() {
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'flex';
+                    loadingScreen.classList.remove('hidden');
+                }
+            });
+        });
+    });
 </script>

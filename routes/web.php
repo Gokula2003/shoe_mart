@@ -22,14 +22,15 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/order', [OrderController::class, 'index'])->name('order');
 Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history')->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 Route::get('/aftercare', [AfterCareController::class, 'index'])->name('aftercare');
 
-// Two-Factor Email Authentication Routes
-Route::middleware(['auth:sanctum', config('jetstream.auth_session')])->group(function () {
-    Route::get('/two-factor-email', [TwoFactorEmailController::class, 'show'])->name('two-factor.login');
-    Route::post('/two-factor-email/verify', [TwoFactorEmailController::class, 'verify'])->name('two-factor.verify');
-    Route::post('/two-factor-email/resend', [TwoFactorEmailController::class, 'resend'])->name('two-factor.resend');
-});
+// Two-Factor Email Authentication Routes - DISABLED (Using Google Authenticator)
+// Route::middleware(['auth:sanctum', config('jetstream.auth_session')])->group(function () {
+//     Route::get('/two-factor-email', [TwoFactorEmailController::class, 'show'])->name('two-factor.login');
+//     Route::post('/two-factor-email/verify', [TwoFactorEmailController::class, 'verify'])->name('two-factor.verify');
+//     Route::post('/two-factor-email/resend', [TwoFactorEmailController::class, 'resend'])->name('two-factor.resend');
+// });
 
 // After Care Booking Routes
 Route::get('/aftercare/booking', [AfterCareBookingController::class, 'showBookingForm'])->name('aftercare.booking');
@@ -70,12 +71,16 @@ Route::get('/gift/success/{giftOrder}', function ($giftOrderId) {
 // Admin Routes
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
-    Route::post('/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+    Route::post('/login', [AdminAuthController::class, 'login'])
+        ->middleware('throttle:5,1') // 5 attempts per minute
+        ->name('admin.login.post');
     
     // Admin Creation Routes (protected - only accessible if no admins exist or in local environment)
     Route::middleware('allow.admin.creation')->group(function () {
         Route::get('/create-admin', [AdminAuthController::class, 'showCreateForm'])->name('admin.create.form');
-        Route::post('/create-admin', [AdminAuthController::class, 'storeAdmin'])->name('admin.create.store');
+        Route::post('/create-admin', [AdminAuthController::class, 'storeAdmin'])
+            ->middleware('throttle:3,10') // 3 attempts per 10 minutes for admin creation
+            ->name('admin.create.store');
     });
     
     Route::middleware('auth:admin')->group(function () {
@@ -126,6 +131,11 @@ Route::prefix('admin')->group(function () {
         Route::patch('/gifts/{id}/status', [App\Http\Controllers\Admin\AdminGiftController::class, 'updateStatus'])->name('admin.gifts.updateStatus');
         Route::patch('/gifts/{id}/tracking', [App\Http\Controllers\Admin\AdminGiftController::class, 'updateTracking'])->name('admin.gifts.updateTracking');
         Route::delete('/gifts/{id}', [App\Http\Controllers\Admin\AdminGiftController::class, 'destroy'])->name('admin.gifts.destroy');
+        
+        // Contact Messages Management
+        Route::get('/contact-messages', [App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('admin.contact-messages.index');
+        Route::get('/contact-messages/{id}', [App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('admin.contact-messages.show');
+        Route::delete('/contact-messages/{id}', [App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('admin.contact-messages.destroy');
     });
 });
 

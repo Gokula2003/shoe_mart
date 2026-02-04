@@ -27,9 +27,10 @@
                                     <button 
                                         type="button"
                                         wire:click="selectAmount({{ $amount }})"
-                                        class="py-4 px-6 rounded-lg border-2 transition-all {{ $selectedAmount == $amount ? 'border-purple-600 bg-purple-50 text-purple-700' : 'border-gray-300 hover:border-purple-400' }}"
+                                        class="py-4 px-6 rounded-lg border-2 transition-all font-bold text-xl {{ $selectedAmount == $amount ? 'border-purple-600 bg-purple-50 !text-purple-700' : 'border-gray-300 bg-white !text-black hover:border-purple-400 hover:bg-purple-50' }}"
+                                        style="color: {{ $selectedAmount == $amount ? '#7c3aed' : '#000000' }} !important;"
                                     >
-                                        <span class="text-xl font-bold">${{ $amount }}</span>
+                                        ${{ $amount }}
                                     </button>
                                 @endforeach
                             </div>

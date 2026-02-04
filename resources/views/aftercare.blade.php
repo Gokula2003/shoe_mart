@@ -23,6 +23,9 @@
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-50 via-white to-green-50 min-h-screen pt-20">
+    <!-- Loading Screen -->
+    <x-loading />
+    
     <!-- Navigation -->
     <x-navigation />
 

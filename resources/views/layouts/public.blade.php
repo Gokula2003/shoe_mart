@@ -18,8 +18,8 @@
     @livewireStyles
 </head>
 <body class="font-sans antialiased">
-    <!-- Customer Loading Screen -->
-    <x-loading title="ShoeMart" message="Loading your shopping experience..." />
+    <!-- Loading Screen -->
+    <x-loading />
     
     <!-- Navigation -->
     <header class="fixed top-0 left-0 right-0 z-50 glass backdrop-blur-md bg-white/80 shadow-sm">
@@ -36,6 +36,9 @@
                         <a href="/aftercare" class="text-gray-700 hover:text-purple-600 transition font-medium">After Care</a>
                         <a href="{{ route('vouchers.shop') }}" class="text-gray-700 hover:text-purple-600 transition font-medium">Vouchers</a>
                         <a href="{{ route('gift.send') }}" class="text-gray-700 hover:text-purple-600 transition font-medium">Send Gift</a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-purple-600 transition font-medium">Dashboard</a>
+                        @endauth
                     </div>
                 </div>
                 @if (Route::has('login'))

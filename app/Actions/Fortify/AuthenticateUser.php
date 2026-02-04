@@ -36,8 +36,8 @@ class AuthenticateUser
             ]);
         }
 
-        // Send 2FA email code
-        $this->twoFactorService->generateAndSendCode($user);
+        // Email-based 2FA disabled - Using Google Authenticator only
+        // $this->twoFactorService->generateAndSendCode($user);
 
         return $user;
     }

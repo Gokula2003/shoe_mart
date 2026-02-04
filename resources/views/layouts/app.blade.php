@@ -22,9 +22,6 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased">
-        <!-- Customer Loading Screen -->
-        <x-loading title="ShoeMart" message="Loading your experience..." />
-        
         <x-banner />
 
         <div class="min-h-screen bg-gray-100">

@@ -7,91 +7,146 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gradient-to-br from-gray-50 via-white to-purple-50 min-h-screen flex items-center justify-center">
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-md">
-        <div class="bg-white rounded-3xl shadow-2xl p-8">
-            <!-- Icon -->
+        <div class="bg-white rounded-3xl shadow-2xl p-8 relative">
+            <!-- Close Button -->
+            <button onclick="window.location.href='{{ route('logout') }}'" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+
+            <!-- Icon Section -->
             <div class="text-center mb-6">
-                <div class="w-20 h-20 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                    </svg>
+                <div class="relative inline-block">
+                    <!-- Envelope Icon -->
+                    <div class="w-28 h-20 bg-gradient-to-br from-orange-400 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3">
+                        <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <!-- Key/Lock Icon -->
+                    <div class="absolute -bottom-2 -left-2 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                    </div>
                 </div>
-                <h1 class="text-3xl font-bold text-gray-900">Two-Factor Authentication</h1>
-                <p class="text-gray-600 mt-2">Enter the 6-digit code sent to your email</p>
             </div>
 
+            <!-- Title -->
+            <h1 class="text-2xl font-bold text-gray-900 text-center mb-2">Verify Your Email Address</h1>
+            <p class="text-sm text-gray-500 text-center mb-8 px-4">
+                Lorem ipsum dolor sit amet consectetur. Cursus diam aliquam nunc fermentum facilisis.
+            </p>
+
             @if(session('success'))
-                <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded">
-                    <p class="text-green-700">{{ session('success') }}</p>
+                <div class="mb-6 bg-green-50 border border-green-200 rounded-xl p-3 animate-fadeIn">
+                    <p class="text-green-800 text-sm text-center font-medium">{{ session('success') }}</p>
                 </div>
             @endif
 
             @if($errors->any())
-                <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                    <ul class="list-disc list-inside text-red-700">
+                <div class="mb-6 bg-red-50 border border-red-200 rounded-xl p-3 animate-fadeIn">
+                    <p class="text-red-700 text-sm text-center font-medium">
                         @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
+                            {{ $error }}
                         @endforeach
-                    </ul>
+                    </p>
                 </div>
             @endif
 
+                <!-- Verification Form -->
+                <form method="POST" action="{{ route('two-factor.verify') }}" id="verifyForm">
+                    @csrf
+                    
+                    <div class="mb-8">
+                        <label for="code" class="block text-sm font-semibold text-gray-700 mb-3">Enter 6-Digit Verification Code</label>
+                        <input 
+                            type="text" 
+                            id="code" 
+                            name="code" 
             <!-- Verification Form -->
             <form method="POST" action="{{ route('two-factor.verify') }}" id="verifyForm">
                 @csrf
                 
                 <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-4 text-center">Verification Code</label>
                     <div class="flex justify-center gap-3" id="codeInputs">
-                        <input type="text" class="code-input w-14 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-xl focus:border-purple-600 focus:ring-4 focus:ring-purple-600/20 transition" maxlength="1" pattern="[0-9]" inputmode="numeric" required autofocus>
-                        <input type="text" class="code-input w-14 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-xl focus:border-purple-600 focus:ring-4 focus:ring-purple-600/20 transition" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
-                        <input type="text" class="code-input w-14 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-xl focus:border-purple-600 focus:ring-4 focus:ring-purple-600/20 transition" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
-                        <input type="text" class="code-input w-14 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-xl focus:border-purple-600 focus:ring-4 focus:ring-purple-600/20 transition" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
-                        <input type="text" class="code-input w-14 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-xl focus:border-purple-600 focus:ring-4 focus:ring-purple-600/20 transition" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
-                        <input type="text" class="code-input w-14 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-xl focus:border-purple-600 focus:ring-4 focus:ring-purple-600/20 transition" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                        <input type="text" class="code-input w-14 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-2 focus:ring-orange-200 transition-all duration-200 bg-gray-50" maxlength="1" pattern="[0-9]" inputmode="numeric" required autofocus>
+                        <input type="text" class="code-input w-14 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-2 focus:ring-orange-200 transition-all duration-200 bg-gray-50" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                        <input type="text" class="code-input w-14 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-2 focus:ring-orange-200 transition-all duration-200 bg-gray-50" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                        <input type="text" class="code-input w-14 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-2 focus:ring-orange-200 transition-all duration-200 bg-gray-50" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                        <input type="text" class="code-input w-14 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-2 focus:ring-orange-200 transition-all duration-200 bg-gray-50" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                        <input type="text" class="code-input w-14 h-16 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:border-orange-400 focus:ring-2 focus:ring-orange-200 transition-all duration-200 bg-gray-50" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
                     </div>
                     <input type="hidden" id="code" name="code">
                 </div>
 
-                <button type="submit" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important; align-items: center; justify-content: center;" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-6 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-blue-700 transition shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
-                    Verify Code
+                <!-- Change Email Link -->
+                <p class="text-center text-sm text-gray-600 mb-6">
+                    Want to Change Your Email Address? 
+                    <a href="{{ route('profile.show') }}" class="text-orange-500 font-semibold hover:text-orange-600 transition">Change Here</a>
+                </p>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white py-4 px-6 rounded-full font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
+                    Verify Email
                 </button>
             </form>
 
             <!-- Resend Code -->
-            <form method="POST" action="{{ route('two-factor.resend') }}" class="mt-4">
-                @csrf
-                <button type="submit" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important; align-items: center; justify-content: center;" class="w-full text-purple-600 hover:text-purple-800 py-2 font-semibold transition">
-                    Didn't receive the code? Resend
-                </button>
-            </form>
-
-            <!-- Logout -->
-            <form method="POST" action="{{ route('logout') }}" class="mt-6">
-                @csrf
-                <button type="submit" style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important; align-items: center; justify-content: center;" class="w-full text-gray-500 hover:text-gray-700 py-2 text-sm transition">
-                    Cancel & Logout
-                </button>
-            </form>
-        </div>
-
-        <!-- Info Box -->
-        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-2xl p-4 text-sm text-blue-800">
-            <div class="flex items-start">
-                <svg class="w-5 h-5 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <div>
-                    <p class="font-semibold mb-1">Security Notice</p>
-                    <p>The verification code expires in 10 minutes. If you have any issues, please contact support.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div class="text-center mt-6">
+                <form method="POST" action="{{ route('two-factor.resend') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="text-sm text-gray-600 hover:text-orange-500 font-semibold transition">
+                        Resend Code
+                    </button>
+                </form
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
 
     <script>
-        // Handle 6 separate input boxes
+        // Handle OTP input
+        const codeInput = document.getElementById('code');
+        const form = document.getElementById('verifyForm');
+
+        // Only allow numbers
+        codeInput.addEventListener('input', function(e) {
+            // Remove non-numeric characters
+            this.value = this.value.replace(/\D/g, '');
+            
+            // Limit to 6 digits
+            if (this.value.length > 6) {
+                this.value = this.value.substring(0, 6);
+            }
+            
+            // Auto-submit when 6 digits are entered
+            if (this.value.length === 6 && /^\d{6}$/.test(this.value)) {
+                setTimeout(() => {
+                    form.submit();
+                }, 300);
+            }
+        });
+
+        // Only allow numeric keys
+        codeInput.addEventListener('keypress', function(e) {
+            if (!/^\d$/.test(e.key) && e.key !== 'Enter') {
+                e.preventDefault();
+            }
+        });
+
+        // Prevent form submission if code is incomplete
+        form.addEventListener('submit', function(e) {
+            const code = codeInput.value;
+            if (code.length !== 6 || !/^\d{6}$/.test(code)) {
+                e.6 separate input boxes
         const inputs = document.querySelectorAll('.code-input');
         const hiddenInput = document.getElementById('code');
         const form = document.getElementById('verifyForm');
@@ -109,7 +164,9 @@
                     if (index === inputs.length - 1) {
                         const code = Array.from(inputs).map(i => i.value).join('');
                         if (code.length === 6 && /^\d{6}$/.test(code)) {
-                            form.submit();
+                            setTimeout(() => {
+                                form.submit();
+                            }, 300);
                         }
                     }
                 } else if (this.value.length > 1) {
@@ -140,7 +197,9 @@
                     updateHiddenInput();
                     
                     if (pastedData.length === 6) {
-                        form.submit();
+                        setTimeout(() => {
+                            form.submit();
+                        }, 300);
                     }
                 }
             });
@@ -162,9 +221,4 @@
             const code = Array.from(inputs).map(i => i.value).join('');
             if (code.length !== 6 || !/^\d{6}$/.test(code)) {
                 e.preventDefault();
-                inputs[0].focus();
-            }
-        });
-    </script>
-</body>
-</html>
+                inputs[0]

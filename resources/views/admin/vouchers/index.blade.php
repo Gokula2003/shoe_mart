@@ -86,7 +86,7 @@
                                 @if(!$voucher->is_used && (!$voucher->expires_at || $voucher->expires_at > now()))
                                 <form action="{{ route('admin.vouchers.markAsUsed', $voucher->id) }}" method="POST" class="inline">
                                     @csrf
-                                    <button type="submit" class="text-yellow-600 hover:text-yellow-900" onclick="return confirm('Mark this voucher as used?')">
+                                    <button type="submit" class="inline-flex items-center px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition font-semibold shadow-sm" onclick="return confirm('Mark this voucher as used?')">
                                         Mark Used
                                     </button>
                                 </form>
@@ -94,7 +94,7 @@
                                 <form action="{{ route('admin.vouchers.destroy', $voucher->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Delete this voucher?')">
+                                    <button type="submit" class="inline-flex items-center px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition font-semibold shadow-sm" onclick="return confirm('Delete this voucher?')">
                                         Delete
                                     </button>
                                 </form>
